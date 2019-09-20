@@ -3,13 +3,14 @@ import sys
 
 #The base of my program
 def main():
-    #ta apaitoumena gia tin konsola
+    # Requirements for the console
     data = ""
     for i in range(1, len(sys.argv)):
         data = data + sys.argv[i] + " "
-    #oi arithmoi pou vazei o xristis
+    # The numbers which user inserts
     decimal = list(data.split())
-    #oi diadikoi arithmoi pou vgenoun apo tous arithmous tou xristi
+    
+    # The numbers that users have insert converted to binary
     global bstack
     bstack = []
     for i in range(len(decimal)):
@@ -37,32 +38,34 @@ def norm_maker():
                     if (b == y[j]):
                         norma[j][i] = 1
 
-#This methos search for eights, fours, twos ,ones
+#This method search for eights, fours, twos ,ones
 def search():
     global apotelesma
     apotelesma = ""
-    #oi oktades
+    # eights
     global eights
     eights = []
-    #oi tetrades
+    # fours
     global fours
     fours = []
-    #oi diades
+    # twos
     global twos
     twos = []
-    #o pinakas pou perilamvanei tis theseis ton monadon
+    # The array which includes the position of ones
     global ones
     ones = []
+
     for i in range(4):
         for j in range(4):
             if (norma[i][j] == 1):
                 ones.append(str(i)+" "+str(j))
-    #elegxos an olos o pinakas perilamvanetai apo monades
+
+    # Check if the array includes ones
     if (len(ones) == 16):
         apotelesma = "1"
         return
 
-    #PSAKSIMO GIA 8 kai xorismo apo to an iparxoun 4 katheta h' orizontia
+    # Searching for eights and separation from fours, if they are vertical or horizontal 
     orizontia = []
     katheta = []
     for i in range(4):
@@ -78,7 +81,7 @@ def search():
         if (kplithos == 4):
             katheta.append(i)
 
-    #orizontia
+    # Horizontal
     if (len(orizontia) > 1):
         for x in orizontia:
             flag = False
@@ -110,7 +113,7 @@ def search():
             lista.append(str(orizontia[0]) + " " + str(a))
         fours.append(lista)
 
-    #kahteta
+    # Vertical
     if (len(katheta) > 1):
         for x in katheta:
             flag = False
@@ -141,24 +144,24 @@ def search():
             lista.append(str(a) + " " + str(katheta[0]))
         fours.append(lista)
 
-    #PSAKSIMO GIA 4 (gia stiles kai grammes me 4 exei ginei apo to psaksimo gia 8)
+    # Searchinf for fours (We have search for fours in columns or series when we searched for eights)
 
-    #kratao ksexorista tis tetrades pou einai grammes h' stiles
+    # I save separately the fours from columns or series
     foursfrom8 = copy.deepcopy(fours)
 
     fours = []
 
-    # kratao ta kelia pou einai h oktada gia na min ta kalipso
+    # I save the cells that incude eights to not cover them
     testeights = []
     for i in range(len(eights)):
         for j in range(len(eights[i])):
-            # o pinakas pou exei kalipsei tin oktada
+            # The array that we have cover eights
             testeights.append(eights[i][j])
 
-    # eksafanizei ta diplotipa
+    # Deletes the duplicates
     testeights = list(set(testeights))
 
-    #PSASKIMO GIA STIS 4 GONIES
+    # Searching fours in the corners
     plithos = 0
     plithos8 = 0
     for x in ones:
@@ -171,8 +174,8 @@ def search():
         if (plithos8 < 4):
             fours.append(["0 0", "0 3", "3 0", "3 3"])
 
-    #PSAKSIMO GIA TA APENANTI
-    #psaksimo gia apenanti katheta
+    # Searching for across
+    # Searching across Vertically
     for i in range(3):
         plithos = 0
         akeli = str(i)+" "+"0"
@@ -190,7 +193,7 @@ def search():
             if (plithos8 < 4):
                 fours.append([akeli, bkeli, ckeli, dkeli])
 
-    #psaksimo gia apenanti orizontia
+    # Searching across Horizontally
     for i in range(3):
         plithos = 0
         akeli = "0"+" "+str(i)
@@ -208,7 +211,7 @@ def search():
             if (plithos8 < 4):
                 fours.append([akeli, bkeli, ckeli, dkeli])
 
-    #PSAKSIMO GIA TETRAGONA
+    # Searching for squares
     for i in range(3):
         for j in range(3):
             testkeli = [str(i)+" "+str(j), str(i + 1)+" "+str(j), str(i)+" "+str(j + 1), str(i + 1)+" "+str(j + 1)]
@@ -226,21 +229,21 @@ def search():
                 if (plithos8 < 4):
                     fours.append(testkeli)
 
-    #afairesi ton kelion pou exo kalipsei apo tetrades kai oktades
-    #otan teleioso me tin anazitisi oktadon tetradon kai diadon STO TESTONES THA PERIEXEI TA MONA KELIA
+    # Remove the cells that we have cover them with fours and eights
+    # When I complete the search of eights, fours, twos in TESTONES there are only individual cells
     global testones
     testones = copy.deepcopy(ones)
 
-    #kratao ta kelia pou einai oi tetrades gia na ta diagrapso
+    # I save the cells which are fours, to delete them
     testfours = []
     for i in range(len(fours)):
         for j in range(len(fours[i])):
             testfours.append(fours[i][j])
 
-    #eksafanizei ta diplotipa
+    # Delete the duplicates
     testfours = list(set(testfours))
 
-    # *elegxo gia na do an tha valo tis tetrades pou einai se grammi h' stili
+    # Check if I will enter the fours which they are in lines or columns
     for i in range(len(foursfrom8)):
         plithos = 0
         for j in range(len(foursfrom8[i])):
@@ -254,11 +257,11 @@ def search():
             testfours.append(foursfrom8[i][2])
             testfours.append(foursfrom8[i][3])
 
-    #monadikotita kai meta ton elegxo
-    #eksafanizei ta diplotipa
+    # Uniqueness after the search
+    # Deletes the duplicates
     testfours = list(set(testfours))
 
-    #AFAIRO ta kelia pou einai oktades kai tetrades
+    # Deleting the cells that they are covered by eights and fours
     for i in testeights:
         if i in testones:
             testones.remove(i)
@@ -266,9 +269,9 @@ def search():
         if i in testones:
             testones.remove(i)
 
-    #PSAKSIMO GIA DIADES
+    # Searching for twos
 
-    #psaksimo orizontia
+    # Searching Horizontally
     for i in range(4):
         for j in range(3):
             akeli = str(i)+" "+str(j)
@@ -281,7 +284,7 @@ def search():
             if (plithos2 == 2):
                 twos.append([akeli, bkeli])
 
-    # psaksimo katheta
+    # Searching Vertically
     for j in range(4):
         for i in range(3):
             akeli = str(i) + " " + str(j)
@@ -294,7 +297,7 @@ def search():
             if (plithos2 == 2):
                 twos.append([akeli, bkeli])
 
-    #afairesi ton diadon
+    # Delete the twos
     testtwos = []
     for i in range(len(twos)):
         for j in range(len(twos[i])):
@@ -307,14 +310,15 @@ def search():
 def calculation():
     b = ["00", "01", "11", "10"]
     G = "ABCD"
-    #to teliko apotelesma
+    # The final result
     telikoapotelesma = ""
-    #plithos elaxistooron
+    # Number of minimum conditions
     plelax = 0
     apotelesma = ""
     grammata = {}
     sindiasmos = []
-    #GIA TIS OKTADES
+
+    # For eights
     for i in range(len(eights)):
         pinakas = []
         for j in range(len(eights[i])):
@@ -345,7 +349,7 @@ def calculation():
     for x in sindiasmos:
         telikoapotelesma = telikoapotelesma + x + " " + "\u2228" + " "
 
-    #GIA TIS TETRADES
+    # For fours
     grammata = {}
     sindiasmos = []
     for i in range(len(fours)):
@@ -379,7 +383,7 @@ def calculation():
     for x in sindiasmos:
         telikoapotelesma = telikoapotelesma + x + " " + "\u2228" + " "
 
-    #GIA TIS DIADES
+    # For twos
     grammata = {}
     sindiasmos = []
     for i in range(len(twos)):
@@ -413,7 +417,7 @@ def calculation():
     for x in sindiasmos:
         telikoapotelesma = telikoapotelesma + x + " " + "\u2228" + " "
 
-    #GIA TA MONADIKA KELIA
+    # For unique cells
     grammata = {}
     sindiasmos = []
     for i in range(len(testones)):
