@@ -2,10 +2,10 @@ import pprint
 import copy
 import argparse
 
-# This method takes the txt file and convert it to list
+# This method takes the txt file and convert it to a list
 def filetolist(file):
     input_filename = file
-    #to latin-square
+    # the latin-square
     global latin_square
     latin_square = []
 
@@ -16,16 +16,20 @@ def filetolist(file):
 
 # This method finds all transversals of a latin square
 def find_tranversals ():
-    #transversals ena dictionary me key to proto psifio ton diasxiseon kai value mia lista me tis diasxiseis os lista
+    # transversals : a dictionary with KEY the first digit and as VALUES a list with transversals as list
     global transversals
     transversals = {}
-    #h stoiva pou mpenoun oi airithmoi gia na ginei h diasxisi
+
+    # the stack where we save the numbers to make the transversals
     Stack = []
-    #d h diasstasi ton pinakon pou diaxirizomaste
+
+    # d the dimension of arrays that we control
     global d
     d = len(latin_square)
-    #oi grammes pou exoume perasei
+
+    # the lines that we have parse
     energesgrammes = []
+
     for i in range(len(latin_square)):
         tf = [[False for i in range(d)] for y in range(d)]  # a true - false array
         Stack.append(latin_square[i][0])
@@ -37,36 +41,43 @@ def find_tranversals ():
             tf[j][0] = True
         flag_1 = False
         stili = 1
+
         while(flag_1 == False):
-            # dhmiourgei seires (stacks) pou perilamvanei mia diasxisi
+            
+            # We create series (stacks) which contains a transversal
             for y in range(stili,d):
-                # elegxos na min einai idia ta stoixeia
+                # Check for not having the same elements
                 for m in range (d):
                     for k in range(len(Stack)):
                         if (Stack[k] == latin_square[m][y] and tf[m][y] == False):
                             tf[m][y] = True
-                # psaxnei kai vazei to epomeno stoixeio
+
+                # search and add the next element
                 for x in range (d):
                     if (tf[x][y] == False):
                         Stack.append(latin_square[x][y])
                         energesgrammes.append(x)
-                        # ta stoixeia tis idia grammis ta kanei true
+
+                        # We make true the elements in the same serie
                         for u in range (y, d):
                             tf[x][u] = True
                         break
-            #vazei mia diasxisi pou vrike sti lista me tis diasxiseis
+            # Insert a transversal in the list wiht transversals
             if (len(Stack) == d):
                 transversals[key].append(list(Stack))
-            # elegxos mipos teliosame apo ena iposinolo diasxiseon
+
+            # Check if we have complete a subset of transversals
             flag_1 = True
             for x in range(d):
                 for y in range(d):
                     if (tf[x][y] == False):
                         flag_1 = False
                         break
+
             if (flag_1 == True):
                 break
-            #elegxos an exo ftiaksei diasxisi pou den oloklironete, einai adinati
+
+            # Check if I have made an impossible transversal
             if (len(Stack) < d):
                 for x in range(d):
                     for y in range(len(Stack), d):
@@ -96,14 +107,16 @@ def find_tranversals ():
                 for h in energesgrammes:
                     for p in range(len(energesgrammes),d):
                         tf[h][p] = True
-            #elegxos an iparxei diasxisi pou den exo kanei
+
+            # Check the existance of transversals that I have not make
             if (len(Stack) == d):
                 stili = d - 1
-                o = d - 1 #o odigos gia tis stiles ston parakato ipologismo
+                o = d - 1 #o : support for columns, I need this for the next calculation
                 flag_2 = False
+
                 while(flag_2 == False):
                     trues = 0
-                    # ipologizo se kathe stili posa trues exei
+                    # Calculate how many TRUEs I have in every column
                     for p in range(d):
                         if (tf[p][o] == True):
                             trues = trues + 1
@@ -125,7 +138,9 @@ def find_tranversals ():
                     for p in range(len(Stack) + 1,d):
                         tf[h][p] = True
 
-        #edo mpainei otan allazoume proto stoixeio (diasxisi me diaforetiki enarksi adeiazei tin stack)
+        # We enter here when we change the first element
+        # We make transversal with alternative start
+        # We clear the stack
         if (len(Stack) == d):
             for z in range(d):
                 Stack.pop(len(Stack) - 1)
@@ -138,32 +153,34 @@ def find_tranversals ():
 
 # This method finds n-transversals of all transversals
 def ntranversals_search():
-    #h lista me tis n diasxiseis
+    # The list with n transversals
     global listan
     listan = []
+
     kleidia = list(transversals.keys())
+
     grammi = {x : -1 for x in kleidia}
     flag = False
     thesi = 1
     listan.append(list(transversals.get(kleidia[0])[0]))
     grammi [0] = 0
     star = 0
+
     while (flag == False):
-        #arxiko sindiasmon
         for a in range(thesi, len(kleidia)):
             key = kleidia[a]
-            #mesa sto value, lista
-            #arxi einai to star
             star = grammi.get(key) + 1
             tran = transversals.get(key)
+
             for i in range(star, len(tran)):
                 grammi[key] = i
                 test = list(tran[i])
-                #metritis gia ton an oi diasxiseis einai diaforetikes
+
+                # counter for unique transversals
                 plithos_diafor_sind = 0
+
                 for x in listan:
                     plithos_diafor_psif = 0
-                    #mesa se diasxisi
                     for j in range(1, d):
                         if (test[j] == x[j]):
                             break
@@ -173,13 +190,16 @@ def ntranversals_search():
                         plithos_diafor_sind = plithos_diafor_sind + 1
                     else:
                         break
-                #o sindiasmos kaliptei tis ipothesis mas kai mpenei sth listan
+
+                # The combination satisfies the cases
+                # We add the combination on the list
                 if (plithos_diafor_sind == len(listan)):
                     listan.append(test)
                     break
             if (len(listan) != a + 1):
                 break
-        #an exo vrei x transversals kai oxi n, tote vgazo orismena transversals gia na valo allo sindiasmo transversals
+
+        # If I have find x transversals and not n, the I delete some transversals to add another transversals
         if (len(listan) != d):
                 grammi[len(listan)] = -1
                 thesi = kleidia[len(listan) - 1]
@@ -190,7 +210,7 @@ def ntranversals_search():
 # This method makes an orthogonical square from n - transversals
 def final_square():
     tflista = [[False for i in range(d)] for y in range(d)]
-    # tetr to orthogonio tetragono
+    # tetr : the square
     global tetr
     tetr = copy.deepcopy(latin_square)
     for i in range(d):
@@ -213,7 +233,7 @@ def squares_tograecolatin():
 
 # The base of our programm
 def main():
-    # ta apaitoumena gia thn konsola
+    # The requirements for the cosnole
     parser = argparse.ArgumentParser()
     parser.add_argument("fn", help = "input_file")
 
