@@ -39,7 +39,7 @@ Based on factor b the person will choose *s-c-e-t* at a cost of 26.
 
 ## Description
 
-The purpose of the program is, given a graph and a parameter b, to calculate the optimal path and path that a person will be affected by present bias.
+The purpose of the program is, given a graph and a parameter b, to calculate the optimal path and path that a person will be affected by present bias. Parameter b is referred to present bias, and b<1.
 
 The process of executing the program is:
 
