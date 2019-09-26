@@ -45,7 +45,7 @@ The process of executing the program is:
 
 1. Clone the repository
 2. cd `../assignment-2018-1`
-3. Type python present_bias.py <input_file> <bias_parameter> <start_node> <end_node>
+3. Type `python present_bias.py <input_file> <bias_parameter> <start_node> <end_node>`
     + `input_file` The file name which include the graph (see the examples [example_1](./example_graph_1.txt) | [example_2](./example_graph_2.txt) | [example_3](./example_graph_3.txt). 
     + `bias_parameter` The parameter b
     + `start_node` The starting node for example "s"
