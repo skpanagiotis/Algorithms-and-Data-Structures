@@ -27,8 +27,8 @@ This program construct a **Graeco-Latin square**.
  3. Type `python gr-la-square.py <input_file>`
 
  Some Latin squares for example:
-+ 4x4 
-+ 5x5
-+ 6x6
-+ 10x10 
++ [4x4](./4x4.txt)
++ [5x5](./5x5.txt)
++ [6x6](./6x6.txt)
++ [10x10](./10x10.txt) 
 
