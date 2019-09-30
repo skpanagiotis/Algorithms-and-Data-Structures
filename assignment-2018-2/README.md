@@ -20,7 +20,7 @@ This program construct a **Graeco-Latin square**.
 
  The purpose of the program is, given a Latin square, to costruct the Graeco-Latin square resulting from it.
 
- The process fo executing the program is:
+ The process of executing the program is:
 
  1. Clone the repository
  2. cd `../assignment-2018-2`
