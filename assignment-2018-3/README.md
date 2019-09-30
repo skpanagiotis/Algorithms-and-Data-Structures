@@ -27,7 +27,7 @@ Thus we have 16 different combinations of A, B, C, D describing a transaction be
 In any combination now, we can give a value of 1 if the donor's reputation is good as a result of the transaction, and a value of 0 if the donor's reputation is bad as a result of the transaction. This way fills the above shape.
 
 
-![](./images/sample.png)
+![](https://github.com/skpanagiotis/Algorithms-and-Data-Structures/blob/master/images/sample.png)
 
 
 ## Description
